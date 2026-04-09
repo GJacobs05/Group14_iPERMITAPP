@@ -1,4 +1,4 @@
-package edu.mizzou.Group14_iPERMITAPP.view;
+package edu.mizzou.Group14_iPERMITAPP.controller;
 
 
 public class PermitRequestForm {

@@ -1,4 +1,4 @@
-package edu.mizzou.Group14_iPERMITAPP.controller;
+package edu.mizzou.Group14_iPERMITAPP.service;
 
 public class ReviewSubmittedApplicationsController {
 
