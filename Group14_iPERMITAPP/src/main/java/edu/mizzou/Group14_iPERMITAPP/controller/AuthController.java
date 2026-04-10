@@ -1,23 +1,29 @@
 package edu.mizzou.Group14_iPERMITAPP.controller;
 
+import edu.mizzou.Group14_iPERMITAPP.service.RegisterService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class AuthController {
 
+    @Autowired
+    private RegisterService registerService;
+
     @GetMapping("/login")
     public String loginPage() {
-        return "login"; // loads login.html
+        return "login";
     }
 
     @PostMapping("/login")
     public String handleLogin(@RequestParam String email,
                               @RequestParam String password) {
 
-        // TODO: replace with real authentication
-        if (email.equals("test@test.com") && password.equals("1234")) {
-            return "redirect:/home";
+        boolean success = registerService.login(email, password);
+
+        if (success) {
+            return "redirect:/re/dashboard";
         }
 
         return "redirect:/login?error=true";
@@ -27,9 +33,12 @@ public class AuthController {
     public String handleRegister(@RequestParam String email,
                                  @RequestParam String password) {
 
-        // TODO: save user to database
-        System.out.println("Registering: " + email);
+        boolean success = registerService.register(email, password);
 
-        return "redirect:/login?registered=true";
+        if (success) {
+            return "redirect:/login?registered=true";
+        }
+
+        return "redirect:/login?error=true";
     }
 }
