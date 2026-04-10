@@ -7,6 +7,7 @@ import edu.mizzou.Group14_iPERMITAPP.repository.EnvironmentalPermitRepository;
 import edu.mizzou.Group14_iPERMITAPP.repository.PermitRequestRepository;
 import edu.mizzou.Group14_iPERMITAPP.controller.PermitRequestForm;
 
+import edu.mizzou.Group14_iPERMITAPP.repository.RequestStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +16,14 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class ManagePermitsService {
+public class ManagePermitsService { //probably done at this point
 
     @Autowired
     private EnvironmentalPermitRepository epRepository;
     @Autowired
     private PermitRequestRepository prRepository;
+    @Autowired
+    private RequestStatusRepository rsRepository;
 
     private PermitRequestForm form;
 
@@ -63,6 +66,8 @@ public class ManagePermitsService {
         status.setPermitRequestStatus("Pending Payment");
         status.setPermitRequest(request);
         status.setDate(currentDate);
+
+        rsRepository.save(status);
 
         form.showAcknowledgement("Pending Payment");
 
