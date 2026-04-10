@@ -56,8 +56,25 @@
 
     <h2>Account</h2>
 
-	<p th:if="${param.error}" style="color:red;">Invalid login</p>
-	<p th:if="${param.registered}" style="color:green;">Account created!</p>
+	<p th:if="${param.error != null and param.error[0] == 'exists'}" style="color:red;">
+	    Email already exists
+	</p>
+
+	<p th:if="${param.error != null and param.error[0] == 'email'}" style="color:red;">
+	    Invalid email format
+	</p>
+
+	<p th:if="${param.error != null and param.error[0] == 'empty'}" style="color:red;">
+	    Please fill in all fields
+	</p>
+
+	<p th:if="${param.error != null and param.error[0] == 'true'}" style="color:red;">
+	    Invalid login
+	</p>
+
+	<p th:if="${param.registered}" style="color:green;">
+	    Account created!
+	</p>
 	
     <!-- LOGIN FORM -->
     <div id="loginForm">
@@ -85,6 +102,29 @@
     </div>
 
 </div>
+
+<script>
+    function showRegister() {
+        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("registerForm").style.display = "block";
+    }
+
+    function showLogin() {
+        document.getElementById("loginForm").style.display = "block";
+        document.getElementById("registerForm").style.display = "none";
+    }
+
+    window.onload = function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const mode = urlParams.get("mode");
+
+        if (mode === "register") {
+            showRegister();
+        } else {
+            showLogin();
+        }
+    }
+</script>
 
 </body>
 </html>
