@@ -61,6 +61,14 @@
         <a class="account" href="/re/account">My Account</a>
         <a class="logout" href="/logout">Logout</a>
     </div>
+	
+	<p th:if="${param.paid != null and param.paid.contains('true')}" style="color:green;">
+	    Payment successful!
+	</p>
+
+	<p th:if="${param.paid != null and param.paid.contains('false')}" style="color:red;">
+	    Payment cancelled.
+	</p>
 
     <h2>RE Dashboard</h2>
 

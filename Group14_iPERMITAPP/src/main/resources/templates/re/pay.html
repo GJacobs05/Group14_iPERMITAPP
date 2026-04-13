@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pay Permit Fee</title>
+</head>
+<body>
+
+	<h2>Pay Permit Fee</h2>
+
+	<p>
+	    Request ID: <span th:text="${request.requestNo}"></span>
+	</p>
+
+	<p>
+	    Permit Type: <span th:text="${request.environmentalPermit.permitName}"></span>
+	</p>
+
+	<p>
+	    Amount Due: $<span th:text="${fee}"></span>
+	</p>
+
+	<form method="post" action="/re/pay">
+
+	    <input type="hidden" name="requestNo" th:value="${request.requestNo}" />
+
+	    <label>Card Number:</label>
+	    <input name="cardNumber" placeholder="1234 5678 9012 3456"/>
+
+	    <br><br>
+
+	    <button name="action" value="pay">Pay</button>
+	    <button name="action" value="cancel">Cancel</button>
+	</form>
+
+	<br>
+	<a href="/re/dashboard">← Back to Dashboard</a>
+
+</body>
+</html>

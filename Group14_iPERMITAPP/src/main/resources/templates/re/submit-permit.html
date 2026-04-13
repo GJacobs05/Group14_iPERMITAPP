@@ -1,28 +1,105 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Submit Permit Request</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            width: 400px;
+            margin: 80px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        input, select {
+            width: 90%;
+            padding: 8px;
+            margin: 6px 0;
+        }
+
+        button {
+            padding: 8px 14px;
+            margin-top: 10px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
 <body>
-    <h2>Submit Permit Request</h2>
 
-    <form method="post" action="/re/submit">
-        <label>Activity Description:</label><br>
-        <input name="activityDescription"/><br><br>
+	<div class="container">
 
-        <label>Start Date:</label><br>
-        <input type="date" name="activityStartDate"/><br><br>
+	    <h2>Submit Permit Request</h2>
 
-        <label>Duration:</label><br>
-        <input name="activityDuration"/><br><br>
+	    <p th:if="${param.error != null}" style="color:red;">
+	        Something went wrong. Please try again.
+	    </p>
+		
+		<p th:if="${param.error == 'permit'}" style="color:red;">
+		    Invalid permit selected
+		</p>
+		
+		<p th:if="${param.error == 'date'}" style="color:red;">
+		    End date must be after start date
+		</p>
 
-        <label>Permit Type:</label><br>
-        <select name="permitId">
-            <option value="AIR">Air Permit</option>
-            <option value="WASTE">Waste Permit</option>
-        </select><br><br>
+		<p th:if="${param.success}" style="color:green;">
+		    Permit request submitted!
+		</p>
 
-        <button type="submit">Submit</button>
-    </form>
+		<div th:if="${param.success}">
+		    <a th:href="@{/re/pay(requestNo=${param.requestNo})}">
+		        <button type="button">Pay Fee</button>
+		    </a>
+		</div>
 
-    <br>
-    <a href="/re/dashboard">Back</a>
+	    <form method="post" action="/re/submit">
+
+	        <label>Activity Description</label>
+	        <input name="activityDescription" placeholder="Describe your activity" required />
+
+	        <label>Start Date</label>
+	        <input type="date" name="activityStartDate" required />
+
+	        <label>End Date (Duration)</label>
+	        <input type="date" name="activityDuration" required />
+
+	        <label>Permit Type</label>
+	        <select name="permitId" required>
+	            <option value="">-- Select Permit --</option>
+	            <option value="AIR">Air Permit</option>
+	            <option value="WASTE">Waste Permit</option>
+	        </select>
+
+	        <button type="submit">Submit Request</button>
+	    </form>
+
+	    <a href="/re/dashboard">← Back to Dashboard</a>
+
+	</div>
+
+	<script>
+	document.querySelector("form").addEventListener("submit", function (e) {
+	    const start = document.querySelector("input[name='activityStartDate']").value;
+	    const end = document.querySelector("input[name='activityDuration']").value;
+
+	    if (start && end && end < start) {
+	        e.preventDefault();
+	        alert("End date must be after start date.");
+	    }
+	});
+	</script>
+	
 </body>
 </html>
