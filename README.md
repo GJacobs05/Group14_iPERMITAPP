@@ -12,6 +12,9 @@ Make sure you have the following installed before getting started:
 - **Maven 3.6+** (or use the included `mvnw` wrapper)
 - **PostgreSQL 13+**
 
+### IDE Setup (Important)
+If you are using an IDE (IntelliJ IDEA, Eclipse, etc.), ensure you have the **Lombok plugin** installed and **Annotation Processing** enabled in your IDE settings. Without this, your IDE may report compilation errors for missing getters, setters, or constructors.
+
 ---
 
 ## Database Setup
@@ -19,12 +22,14 @@ Make sure you have the following installed before getting started:
 1. Open your PostgreSQL client (e.g., `psql` or pgAdmin).
 
 2. Create the database:
-
 ```sql
 CREATE DATABASE group14_ipermitdb;
 ```
 
-3. Make sure a user named `postgres` exists with the password `password`. If you'd like to use different credentials, update `src/main/resources/application.properties` accordingly (see the Configuration section below).
+3. Configure connection:
+Ensure a user named `postgres` exists with the password `password`. 
+
+> **Important:** If your local PostgreSQL configuration uses a different username or password, you **must** update them in `src/main/resources/application.properties`. Additionally, if you change the database name (currently `group14_ipermitdb`), you must also update the `spring.datasource.url` property in `application.properties` to match.
 
 The application uses `spring.jpa.hibernate.ddl-auto=update`, so Hibernate will automatically create and update all tables on first run. Seed data (two default permit types and a default EO account) is loaded from `src/main/resources/data.sql` on startup.
 
