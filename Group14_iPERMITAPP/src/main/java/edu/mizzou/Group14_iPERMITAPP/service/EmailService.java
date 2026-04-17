@@ -49,10 +49,12 @@ public class EmailService {
     }
 
     public void sendSimpleEmail(String to, String subject, String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
-        mailSender.send(message);
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        message.setTo(to);
+//        message.setSubject(subject);
+//        message.setText(text);
+//        mailSender.send(message);
+    	
+    	System.out.println("EMAIL WOULD BE SENT TO: " + to + " | WITH SUBJECT: " + subject + " | WITH CONTENT: " + text);
     }
 }
