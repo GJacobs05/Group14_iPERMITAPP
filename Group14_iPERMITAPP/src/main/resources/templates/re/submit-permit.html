@@ -58,6 +58,8 @@
 		    Permit request submitted!
 		</p>
 
+		<p th:if="${param.error == 'site'}" style="color:red;">Invalid site selected</p>
+		
 		<div th:if="${param.success}">
 		    <a th:href="@{/re/pay(requestNo=${param.requestNo})}">
 		        <button type="button">Pay Fee</button>
@@ -75,6 +77,15 @@
 	        <label>End Date (Duration)</label>
 	        <input type="date" name="activityDuration" required />
 
+			<label>Select Site</label>
+			<select name="siteId" required>
+			    <option value="">-- Select Site --</option>
+			    <option th:each="site : ${sites}" 
+			            th:value="${site.id}" 
+			            th:text="${site.siteAddress}">
+			    </option>
+			</select>
+			
 	        <label>Permit Type</label>
 	        <select name="permitId" required>
 				<option th:each="permit : ${permits}" 

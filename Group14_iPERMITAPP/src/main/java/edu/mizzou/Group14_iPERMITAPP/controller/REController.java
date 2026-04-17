@@ -62,12 +62,12 @@ public class REController {
 	}
 
 	@GetMapping("/re/submit")
-	public String submitPermitPage(Model model) {
-	    // Fetch all permits from the database
-	    List<EnvironmentalPermit> permits = environmentalPermitRepository.findAll();
+	public String submitPermitPage(HttpSession session, Model model) {
+	    String email = (String) session.getAttribute("userEmail");
+	    RE user = reRepository.findByEmail(email);
 	    
-	    // Add them to the model
-	    model.addAttribute("permits", permits);
+	    model.addAttribute("permits", environmentalPermitRepository.findAll());
+	    model.addAttribute("sites", user.getSites());
 	    
 	    return "re/submit-permit";
 	}
@@ -123,7 +123,7 @@ public class REController {
 
 	@PostMapping("/re/submit")
 	public String submitPermit(@RequestParam String activityDescription, @RequestParam String activityStartDate,
-			@RequestParam String activityDuration, @RequestParam String permitId, HttpSession session) {
+			@RequestParam String activityDuration, @RequestParam String permitId, @RequestParam Long siteId, HttpSession session) {
 
 		if (session.getAttribute("userEmail") == null) {
 			return "redirect:/login";
@@ -148,7 +148,14 @@ public class REController {
 		if (permit == null) {
 		    return "redirect:/re/submit?error=permit";
 		}
+		
+		RESite site = user.getSites().stream()
+                 .filter(s -> s.getId().equals(siteId))
+                 .findFirst()
+                 .orElse(null);
 
+		if (site == null) return "redirect:/re/submit?error=site";
+		
 		PermitRequest request = new PermitRequest();
 
 		// system-generated sequence (workbook requirement)
@@ -165,6 +172,7 @@ public class REController {
 		request.setPermitFee(permit.getPermitFee());
 
 		request.setRe(user);
+		request.setSite(site);
 
 		request.setEnvironmentalPermit(permit);
 

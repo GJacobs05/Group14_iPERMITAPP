@@ -23,6 +23,10 @@ public class PermitRequest {
     private Date activityDuration;
 
     private Double permitFee;
+    
+    @ManyToOne
+    @JoinColumn(name = "site_id")
+    private RESite site;
 
     @ManyToOne
     @JoinColumn(name = "re_id")
