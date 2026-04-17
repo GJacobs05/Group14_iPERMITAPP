@@ -55,9 +55,7 @@ public class ReviewSubmittedApplicationsForm {
         // Send to HTML
         model.addAttribute("permit", permit);
 
-        //if (!permit.isViewed()){
-            //reviewSubmittedApplicationsService.setCurrentRequest(permit);
-        //}
+        reviewSubmittedApplicationsService.setCurrentRequest(permit);
 
         return "eo/permit-detail";
     }

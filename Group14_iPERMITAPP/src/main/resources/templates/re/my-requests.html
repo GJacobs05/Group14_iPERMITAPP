@@ -66,62 +66,45 @@
 
     <h2>My Permit Requests</h2>
 
-    <table>
-        <tr>
-            <th>Request #</th>
-            <th>Status</th>
-            <th>Fee</th>
-            <th>Action</th>
-        </tr>
+	<table>
+	    <tr>
+	        <th>Request #</th>
+	        <th>Review Status</th>
+	        <th>Payment Status</th>
+	        <th>Fee</th>
+	        <th>Action</th>
+	    </tr>
 
-        <tr th:each="req : ${requests}">
-            <td th:text="${req.requestNo}"></td>
+	    <tr th:each="req : ${requests}">
+	        <td th:text="${req.requestNo}"></td>
 
-            <td>
+			<!-- Review Status Column -->
+			<td>
+			    <span th:if="${statusMap[req.requestNo] == 'Approved'}" class="paid">APPROVED</span>
+			    <span th:if="${statusMap[req.requestNo] == 'Rejected'}" class="unpaid">REJECTED</span>
+			    <span th:if="${statusMap[req.requestNo] == 'Payment Accepted'}" class="paid">PAYMENT ACCEPTED</span>
+			    <span th:if="${statusMap[req.requestNo] == 'Being Reviewed'}" class="unpaid">BEING REVIEWED</span>
+				<span th:if="${statusMap[req.requestNo] == 'Pending Payment'}" class="unpaid">PENDING PAYMENT</span>
+			</td>
 
-                <!-- Review Status -->
-                <span th:if="${statusMap[req.requestNo] == 'Being Reviewed'}"
-                      class="unpaid">
-                    UNDER REVIEW
-                </span>
+			<!-- Payment Status Column -->
+			<td>
+			    <span th:if="${paidMap[req.requestNo]}" class="paid">PAID</span>
+			    <span th:if="${!paidMap[req.requestNo]}" class="unpaid">UNPAID</span>
+			</td>
 
-                <span th:if="${statusMap[req.requestNo] == 'Approved'}"
-                      class="paid">
-                    APPROVED
-                </span>
+	        <td>$<span th:text="${req.permitFee}"></span></td>
 
-                <span th:if="${statusMap[req.requestNo] == 'Rejected'}"
-                      class="unpaid">
-                    REJECTED
-                </span>
-
-                <br>
-
-                <!-- Payment Status -->
-                <span th:if="${paidMap[req.requestNo]}"
-                      class="paid">
-                    PAID
-                </span>
-
-                <span th:if="${!paidMap[req.requestNo]}"
-                      class="unpaid">
-                    UNPAID
-                </span>
-
-            </td>
-
-            <td>$<span th:text="${req.permitFee}"></span></td>
-
-            <td>
-                <a th:if="${!paidMap[req.requestNo]}"
-                   th:href="@{/re/pay(requestNo=${req.requestNo})}">
-                    <button>Pay</button>
-                </a>
-
-                <span th:if="${paidMap[req.requestNo]}" class="paid">✔ Paid</span>
-            </td>
-        </tr>
-    </table>
+	        <!-- 3. Action Column -->
+	        <td>
+	            <a th:if="${!paidMap[req.requestNo]}"
+	               th:href="@{/re/pay(requestNo=${req.requestNo})}">
+	                <button>Pay</button>
+	            </a>
+	            <span th:if="${paidMap[req.requestNo]}" class="paid">✔ NONE</span>
+	        </td>
+	    </tr>
+	</table>
 
     <a href="/re/dashboard" class="back">← Back to Dashboard</a>
 

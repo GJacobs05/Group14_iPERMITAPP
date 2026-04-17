@@ -198,36 +198,28 @@ public class REController {
 		}
 
 		// Get this RE's requests
-		List<PermitRequest> requests = permitRequestRepository.findByRe(user);
+	    List<PermitRequest> requests = permitRequestRepository.findByRe(user);
+	    
+	    Map<String, Boolean> paidMap = new HashMap<>();
+	    Map<String, String> statusMap = new HashMap<>();
 
-		// Existing payment map
-		Map<String, Boolean> paidMap = new HashMap<>();
+	    // Get the latest status for each request
+	    List<RequestStatus> latestStatuses = requestStatusRepository.findLatestStatuses();
+	    for (RequestStatus rs : latestStatuses) {
+	        statusMap.put(rs.getPermitRequest().getRequestNo(), rs.getPermitRequestStatus());
+	    }
 
-		for (PermitRequest r : requests) {
-			boolean paid = paymentRepository.findByPermitRequest(r) != null;
-			paidMap.put(r.getRequestNo(), paid);
-		}
+	    // Build Maps
+	    for (PermitRequest r : requests) {
+	        // Payment check
+	        boolean paid = paymentRepository.findByPermitRequest(r) != null;
+	        paidMap.put(r.getRequestNo(), paid);
 
-		// NEW: status map
-		Map<String, String> statusMap = new HashMap<>();
-
-		// Uses your existing repository method
-		List<RequestStatus> latestStatuses =
-				requestStatusRepository.findLatestStatuses();
-
-		for (RequestStatus rs : latestStatuses) {
-			String requestNo = rs.getPermitRequest().getRequestNo();
-			String status = rs.getPermitRequestStatus();
-
-			statusMap.put(requestNo, status);
-		}
-
-		// Default if no status exists yet
-		for (PermitRequest r : requests) {
-			if (!statusMap.containsKey(r.getRequestNo())) {
-				statusMap.put(r.getRequestNo(), "Being Reviewed");
-			}
-		}
+	        // Status default
+	        if (!statusMap.containsKey(r.getRequestNo())) {
+	            statusMap.put(r.getRequestNo(), "Pending Payment");
+	        }
+	    }
 
 		model.addAttribute("requests", requests);
 		model.addAttribute("paidMap", paidMap);
