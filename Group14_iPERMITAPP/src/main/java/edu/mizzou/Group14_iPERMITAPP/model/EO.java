@@ -6,10 +6,9 @@ import lombok.Data;
 @Entity
 @Data
 public class EO {
-
     @Id
     private String id;
-
+    private String email;
     private String name;
     private String password;
 }
