@@ -87,9 +87,13 @@
 		       th:value="${user.organizationAddress}"
 		       placeholder="Enter address" />
 
-		<input name="email"
-		       th:value="${user.email}"
-		       placeholder="Enter email" />
+			   <label style="font-size: 13px; font-weight: bold; display: block; text-align: left; margin-top: 10px;">
+			       Email <span style="color: #888; font-weight: normal;">(Cannot be edited)</span>
+			   </label>
+			   <input name="email"
+			          th:value="${user.email}"
+			          readonly
+			          style="background-color: #eee; cursor: not-allowed;" />
 
 	    <hr>
 		
