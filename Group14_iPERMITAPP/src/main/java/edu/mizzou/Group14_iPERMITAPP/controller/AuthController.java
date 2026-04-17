@@ -55,24 +55,21 @@ public class AuthController {
 
 	@PostMapping("/register")
 	public String handleRegister(@RequestParam String contactPersonName, @RequestParam String organizationName,
-			@RequestParam String organizationAddress, @RequestParam String email, @RequestParam String password) {
+			@RequestParam String organizationAddress, @RequestParam String email, @RequestParam String password,
+			@RequestParam String siteAddress, @RequestParam String siteContactPerson) {
 
 		String result = registerService.register(contactPersonName, organizationName, organizationAddress, email,
-				password);
+				password, siteAddress, siteContactPerson);
 
 		switch (result) {
 		case "SUCCESS":
 			return "redirect:/login?registered=true";
-
 		case "EMAIL_EXISTS":
 			return "redirect:/login?error=exists&mode=register";
-
 		case "INVALID_EMAIL":
 			return "redirect:/login?error=email&mode=register";
-
 		case "EMPTY_FIELDS":
 			return "redirect:/login?error=empty&mode=register";
-
 		default:
 			return "redirect:/login?error=true";
 		}
