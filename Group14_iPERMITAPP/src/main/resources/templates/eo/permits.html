@@ -59,11 +59,15 @@
             line-height: 1.5;
         }
 
+        .status {
+            margin-top: 8px;
+            font-weight: bold;
+        }
+
         .review-btn {
             padding: 8px 14px;
             background-color: #2d6cdf;
             color: white;
-            border: none;
             border-radius: 6px;
             cursor: pointer;
             text-decoration: none;
@@ -91,21 +95,33 @@
 
         <div class="permit-row">
 
-			<div class="info">
-			    <strong>Permit ID:</strong> <span th:text="${permit.requestNo}"></span><br>
+            <div class="info">
+                <strong>Permit ID:</strong>
+                <span th:text="${permit.requestNo}"></span><br>
 
-			    <strong>Organization:</strong>
-			    <span th:text="${permit.re.organizationName}"></span><br>
+                <strong>Organization:</strong>
+                <span th:text="${permit.re.organizationName}"></span><br>
 
-			    <strong>Contact:</strong>
-			    <span th:text="${permit.re.contactPersonName}"></span><br>
+                <strong>Contact:</strong>
+                <span th:text="${permit.re.contactPersonName}"></span><br>
 
-			    <strong>Date Submitted:</strong>
-			    <span th:text="${permit.dateOfRequest}"></span>
-			</div>
+                <strong>Date Submitted:</strong>
+                <span th:text="${permit.dateOfRequest}"></span><br>
 
-            <!-- REVIEW BUTTON -->
-			<a th:href="@{'/eo/permits/' + ${permit.requestNo}}" class="review-btn">Review</a>
+                <!-- STATUS DISPLAY -->
+                <div class="status">
+                    Status:
+                    <span th:text="${statusMap[permit.requestNo]}"></span>
+                </div>
+            </div>
+
+            <!-- REVIEW BUTTON (ONLY IF NOT FINAL) -->
+            <a th:if="${statusMap[permit.requestNo] != 'Approved'
+                   and statusMap[permit.requestNo] != 'Rejected'}"
+               th:href="@{'/eo/permits/' + ${permit.requestNo}}"
+               class="review-btn">
+                Review
+            </a>
 
         </div>
 

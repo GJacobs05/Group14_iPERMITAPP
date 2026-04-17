@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class RegistrationForm { // aka ministry's website
@@ -47,8 +48,10 @@ public class RegistrationForm { // aka ministry's website
 
         // Get only PAID permits from your service
         List<PermitRequest> permits = acknowledgeEOService.getValidPermitRequests();
-        model.addAttribute("permits", permits);
+        Map<String, String> statusMap = acknowledgeEOService.getLatestStatusMap();
 
+        model.addAttribute("permits", permits);
+        model.addAttribute("statusMap", statusMap);
         return "eo/permits";
     }
     

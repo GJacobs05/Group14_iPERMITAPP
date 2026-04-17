@@ -13,6 +13,8 @@ public class PermitRequest {
 
     private Date dateOfRequest;
 
+    //private boolean viewed = false;
+
     private String activityDescription;
 
     private Date activityStartDate;

@@ -4,6 +4,7 @@ import edu.mizzou.Group14_iPERMITAPP.model.EO;
 import edu.mizzou.Group14_iPERMITAPP.model.PermitRequest;
 import edu.mizzou.Group14_iPERMITAPP.repository.EORepository;
 import edu.mizzou.Group14_iPERMITAPP.repository.PermitRequestRepository;
+import edu.mizzou.Group14_iPERMITAPP.repository.RequestStatusRepository;
 import edu.mizzou.Group14_iPERMITAPP.service.ReviewSubmittedApplicationsService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class ReviewSubmittedApplicationsForm {
 
     @Autowired
     private ReviewSubmittedApplicationsService reviewSubmittedApplicationsService;
+
+    @Autowired
+    private RequestStatusRepository requestStatusRepository;
 
     @GetMapping("/eo/permits/{requestNo}")
     public String viewPermitDetail(
@@ -51,6 +55,10 @@ public class ReviewSubmittedApplicationsForm {
         // Send to HTML
         model.addAttribute("permit", permit);
 
+        //if (!permit.isViewed()){
+            //reviewSubmittedApplicationsService.setCurrentRequest(permit);
+        //}
+
         return "eo/permit-detail";
     }
 
@@ -76,9 +84,9 @@ public class ReviewSubmittedApplicationsForm {
         }
         
         try {
-            if (decision.equals("APPROVE")) {
+            if ("APPROVE".equals(decision)) {
                 reviewSubmittedApplicationsService.approveRequest(permit, eo, reason);
-            } else if (decision.equals("REJECT")) {
+            } else if ("REJECT".equals(decision)) {
                 reviewSubmittedApplicationsService.rejectRequest(permit, eo, reason);
             }
         } catch (Exception e) {

@@ -59,7 +59,7 @@ public class ReviewSubmittedApplicationsService {
 
         rsRepository.save(status);
 
-        emailService.sendUpdateEmail(permit, "Approved");
+        emailService.sendDecisionEmail(permit, "Approved", description);
     }
 
     public void rejectRequest(PermitRequest permit, EO eo, String description){
@@ -81,7 +81,7 @@ public class ReviewSubmittedApplicationsService {
 
         rsRepository.save(status);
 
-        emailService.sendUpdateEmail(permit, "Rejected");
+        emailService.sendDecisionEmail(permit, "Rejected", description);
     }
 
     public void sendEmail(String recipient, String emailBody, String subjectLine){

@@ -26,13 +26,13 @@ public class AuthController {
 	@PostMapping("/login")
 	public String handleLogin(@RequestParam String email, @RequestParam String password, HttpSession session) {
 
-		if (email.equals("environmentalministry158@gmail.com") && password.equals("Ipermit123")) {
+		if (email.equals("environmentalministry158@gmail.com") && password.equals("password")) {
 			session.setAttribute("userType", "EO");
 			session.setAttribute("eo-id", "EO-001");
 			EO eo = new EO();
 			eo.setId("EO-001");
 			eo.setName("Steve");
-			eo.setPassword("Ipermit123");
+			eo.setPassword("password");
 			eoRepository.save(eo);
 			return "redirect:/eo/dashboard";
 		}

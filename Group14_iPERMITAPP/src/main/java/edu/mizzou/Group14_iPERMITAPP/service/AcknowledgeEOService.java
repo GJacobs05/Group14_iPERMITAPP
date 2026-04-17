@@ -6,7 +6,9 @@ import edu.mizzou.Group14_iPERMITAPP.repository.RequestStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AcknowledgeEOService { //still needs work
@@ -16,6 +18,20 @@ public class AcknowledgeEOService { //still needs work
 
     @Autowired
     private EmailService emailService;
+
+    public Map<String, String> getLatestStatusMap() {
+
+        List<RequestStatus> latest = rsRepository.findLatestStatuses();
+
+        Map<String, String> map = new HashMap<>();
+
+        for (RequestStatus rs : latest) {
+            map.put(rs.getPermitRequest().getRequestNo(),
+                    rs.getPermitRequestStatus());
+        }
+
+        return map;
+    }
 
     public void acceptPayment(PermitRequest permit){
         // this should do something before updating the status, however that is going to interact with one of the

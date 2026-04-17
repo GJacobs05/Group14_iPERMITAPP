@@ -36,6 +36,18 @@ public class EmailService {
         sendSimpleEmail(to, subject, body);
     }
 
+    public void sendDecisionEmail(PermitRequest permit, String decision, String description) {
+        if (description.equals("")){
+            description = "no reason givin";
+        }
+        String to = permit.getRe().getEmail();
+        String subject = "Your permit has been " + decision;
+        String body = "Hello " + permit.getRe().getContactPersonName() + ",\n\nThis email is to inform you that a decision has been made on one of your permits. " +
+                "permit " + permit.getRequestNo() + " has been " + decision + ". the reason for this decision is as follows:\n\n" + description + ".\n\n-Environmental Ministry";
+
+        sendSimpleEmail(to, subject, body);
+    }
+
     public void sendSimpleEmail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
